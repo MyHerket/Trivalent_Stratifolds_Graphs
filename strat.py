@@ -218,7 +218,6 @@ class strat_graph(nx.MultiGraph):
 		H=strat_graph(black=B,white=W,edges=edges)
 		return H
 		
-
 	def St_B(self):
 		"""
 		Returns list of components of St(B), the closed star 
@@ -246,7 +245,6 @@ class strat_graph(nx.MultiGraph):
 		for C in comp:
 			ans.append(H.subg(C))
 		return ans
-
 		
 	def is_simply_connected(self):
 		"""
@@ -312,7 +310,6 @@ class strat_graph(nx.MultiGraph):
 		H.addEdg([(white_node, new_black, 2), (new_white1, new_black, 1)])
 		return(H)	
 
-
 	def old_O1(self,white_node,black_nodes1,black_nodes2,W0=None,W1=None,B=None):
 		"""
 		Performs operation O1 on a copy, which is returned.
@@ -350,9 +347,7 @@ class strat_graph(nx.MultiGraph):
 		H.addEdg(edges)
 		H.addEdg([(white_node,B),(W0,B),(W1,B)])
 		return H
-		
-		
-
+	
 	def old_O1_1(self,node,other,node_other,black=None,white=None):
 		"""
 		Performs operation O1* if self and other are disjoints graphs.
@@ -383,7 +378,6 @@ class strat_graph(nx.MultiGraph):
 		H.addEdg([(node,black),(node_other,black),(white,black)])
 		
 		return(H)
-		
 			
 	def old_O2(self,white_node,new_white=None,new_black=None):
 		"""
@@ -397,7 +391,6 @@ class strat_graph(nx.MultiGraph):
 			new_black=next(get_str(verts))
 		self.addEdg([(white_node,new_black,2),(new_white,new_black)])
 			
-		
 	def draw(self,trivalent=True):
 		"""
 		Function for drawing the graph.
