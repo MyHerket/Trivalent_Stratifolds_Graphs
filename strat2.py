@@ -36,5 +36,51 @@ def O3(G1, G2, Node1, Node2):
 	G.addEdg([(Node1, B), (Node2, B), (W, B)])
 	return(G)
 
+def build_sub_O1(Graph):
+	"""
+		For each white node in Graph, we create a copy of Graph and perform O1 in that node.
+		Return a list of the graphs obtained.
+	"""
 
+	White = Graph.white()
+	sub_list = []
+
+	for n in White:
+		temp_g = Graph.O1(n)
+		sub_list.append(temp_g)
+	
+	return(sub_list)
+
+def build_sub_O2(Graph):
+	"""
+		For each white node in Graph, we create a copy of Graph and perform O2 in that node.
+		Return a list of the graphs obtained.
+	"""
+
+	White = Graph.white()
+	sub_list = []
+
+	for n in White:
+		temp_g = Graph.O2(n)
+		sub_list.append(temp_g)
+	
+	return(sub_list)
+
+def build_sub_O3(Graph1, Graph2):
+	"""
+		For each white node in Graph1 and each white node in Graph2,
+		we create a new strat_graph object which is the result of performing the operation O1* in those nodes.
+		Return a list of the graphs obtained.
+	"""
+
+	White1 = Graph1.white()
+	White2 = Graph2.white()
+	sub_list = []
+
+	for n in White1:
+		for m in White2:
+			temp_g = O3(Graph1, Graph2, n, m)
+			sub_list.append(temp_g)
+	
+	return(sub_list)
 	

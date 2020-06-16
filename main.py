@@ -6,5 +6,18 @@ G2 = b12()
 Graph = [G1] 
 All_graphs =  [Graph]
 
-G3 = O3(G1, G2, 1, 0)
-G3.draw()
+print("Grafos sub O1")
+L = build_sub_O1(G2)
+for g in L:
+	g.draw()
+
+print("Grafos sub O2")
+L = build_sub_O2(G2)
+for g in L:
+	g.draw()
+
+print("Grafos sub O3")
+L = build_sub_O3(G2, G1)
+for g in L:
+	g.draw()
+
