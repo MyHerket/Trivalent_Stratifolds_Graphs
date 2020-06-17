@@ -110,6 +110,17 @@ class strat_graph(nx.MultiGraph):
 		"""
 		return set([n for n, d in self.nodes(data=True) if d['bipartite']==1])
 		
+	def leaves(self):
+		"""
+		Returns list of nodes with degree 1
+		"""
+		l = []
+		for i in self.white(): 
+			if self.degree(i) == 1:
+				l.append(i)
+		return l
+
+
 	def copy(self):
 		"""
 		Returns a copy of self
