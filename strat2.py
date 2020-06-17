@@ -173,8 +173,8 @@ def Class_isomorphic(list_graph):
 			em = iso.numerical_multiedge_match('weight', [1, 2])
 			compare = nx.is_isomorphic(graph, sub_list[0], edge_match=em)
 			if compare:
-				graph.labeling(sub_list[0].tag[3])
-				sub_list.append(graph)
+				#graph.labeling(sub_list[0].tag[3])
+				#sub_list.append(graph)
 				flag = 1
 				break
 		if flag == 0:
@@ -207,6 +207,6 @@ def build_until_m(All_graphs, m):
 				else: 
 					break
 			new_list = Categories(new_list)
-			#flat_list = [item for l in new_list for item in l]
+			flat_list = [item for l in new_list for item in l]
 			#print("Para ", n, " vertices blancos se generan ", len(flat_list), " graficas distintas.")
-			All_graphs.append(new_list)
+			All_graphs.append(flat_list)

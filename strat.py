@@ -1,6 +1,7 @@
 import networkx as nx
 import string
 import itertools
+import matplotlib
 
 #########
 ##Functions for generating vertices' names automatically.
@@ -414,20 +415,27 @@ class strat_graph(nx.MultiGraph):
 		with edges with label 2 bold.
 		"""
 		from matplotlib.pyplot import show
+		#matplotlib.use("Agg")
+		import matplotlib.pyplot as plt
 		def num_col(t):
 			if t==0:
 				return 'gray'
 			else:
 				return 'black'
 		co=[num_col(self.nodes(data='bipartite')[n]) for n in self.nodes()]
+		f = plt.figure()
 		if trivalent==True:
 			assert self.is_trivalent()==True
 			wi=[e[2]**2 for e in list(self.edges(data='weight'))]
 			nx.draw(self,node_color=co,font_color='white',
 					width=wi,with_labels=True, label = self.tag)
+			name = str(self.tag)+".png"
+			f.savefig(name)
 		else:
 			nx.draw(self,node_color=co,font_color='white',
 					with_labels=True, label = self.tag)
+			name = str(self.tag)+".png"
+			f.savefig(name)
 		show()
         
         
