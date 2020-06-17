@@ -27,6 +27,7 @@ def get_str(used=[],n=1):
 
 #####Stratifold-graph class
 class strat_graph(nx.MultiGraph):
+	tag = (0, 0, 0, 0)
 	def __init__(self,black=[],white=[],edges=None):
 		"""
 		Class initializer. May receive no arguments. 
@@ -119,7 +120,6 @@ class strat_graph(nx.MultiGraph):
 			if self.degree(i) == 1:
 				l.append(i)
 		return l
-
 
 	def copy(self):
 		"""
@@ -321,6 +321,9 @@ class strat_graph(nx.MultiGraph):
 		H.addEdg([(white_node, new_black, 2), (new_white1, new_black, 1)])
 		return(H)	
 
+	def labeling(self, subnum):
+		self.tag = (len(self.white()), len(self.black()), len(self.leaves()), subnum)
+
 	def old_O1(self,white_node,black_nodes1,black_nodes2,W0=None,W1=None,B=None):
 		"""
 		Performs operation O1 on a copy, which is returned.
@@ -421,10 +424,10 @@ class strat_graph(nx.MultiGraph):
 			assert self.is_trivalent()==True
 			wi=[e[2]**2 for e in list(self.edges(data='weight'))]
 			nx.draw(self,node_color=co,font_color='white',
-					width=wi,with_labels=True)
+					width=wi,with_labels=True, label = self.tag)
 		else:
 			nx.draw(self,node_color=co,font_color='white',
-					with_labels=True)
+					with_labels=True, label = self.tag)
 		show()
         
         
@@ -444,6 +447,7 @@ def b111(black=None,white=None):
 		black='a'
 	G=strat_graph()
 	G.addEdg(edges=[(white[0],black),(white[1],black),(white[2],black)])
+	G.labeling(1)
 	return(G)
     
 def b12(black=None,white=None):
@@ -462,4 +466,5 @@ def b12(black=None,white=None):
 		black='a'
 	G=strat_graph()
 	G.addEdg(edges=[(white[0],black,1),(white[1],black,2)])
+	G.labeling(1)
 	return(G)

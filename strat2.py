@@ -1,4 +1,5 @@
 from strat import *
+import networkx.algorithms.isomorphism as iso
 
 def new_ord(letter):
 	return ord(letter)-96
@@ -44,10 +45,13 @@ def build_sub_O1(Graph):
 
 	White = Graph.white()
 	sub_list = []
+	k = 1
 
 	for n in White:
 		temp_g = Graph.O1(n)
+		temp_g.labeling(k)
 		sub_list.append(temp_g)
+		k +=1
 	
 	return(sub_list)
 
@@ -59,10 +63,13 @@ def build_sub_O2(Graph):
 
 	White = Graph.white()
 	sub_list = []
+	k = 1
 
 	for n in White:
 		temp_g = Graph.O2(n)
+		temp_g.labeling(k)
 		sub_list.append(temp_g)
+		k+=1
 	
 	return(sub_list)
 
@@ -76,11 +83,14 @@ def build_sub_O3(Graph1, Graph2):
 	White1 = Graph1.white()
 	White2 = Graph2.white()
 	sub_list = []
+	k = 1
 
 	for n in White1:
 		for m in White2:
 			temp_g = O3(Graph1, Graph2, n, m)
+			temp_g.labeling(k)
 			sub_list.append(temp_g)
+			k += 1
 	
 	return(sub_list)
 	
@@ -121,6 +131,68 @@ def build_from_list_O3(list_graph, list2_graph):
 			graphs += temp_list
 	return graphs
 	
+
+def Class_black_nodes(list_graph):
+	C_l = []
+	for graph in list_graph:
+		k = len(graph.black())
+		if len(C_l) < k:
+			for i in range(len(C_l), k):
+				C_l.append([])
+		C_l[k-1] += [graph]
+	i = len(C_l)-1
+	while i >= 0:
+		if len(C_l[i]) == 0:
+			C_l.pop(i)
+		i += -1
+	return C_l
+
+def Class_leaves(list_graph):
+	C_l = []
+	for graph in list_graph:
+		k = len(graph.leaves())
+		if len(C_l) < k:
+			for i in range(len(C_l), k):
+				C_l.append([])
+		C_l[k-1] += [graph]
+	i = len(C_l)-1
+	while i >= 0:
+		if len(C_l[i]) == 0:
+			C_l.pop(i)
+		i += -1
+	return C_l
+
+def Class_isomorphic(list_graph):
+	C_l = []
+	for graph in list_graph:
+		flag = 0
+		if len(C_l) == 0:
+			graph.labeling(1)
+			C_l.append([graph])
+		for sub_list in C_l:
+			em = iso.numerical_multiedge_match('weight', [1, 2])
+			compare = nx.is_isomorphic(graph, sub_list[0], edge_match=em)
+			if compare:
+				graph.labeling(sub_list[0].tag[3])
+				sub_list.append(graph)
+				flag = 1
+				break
+		if flag == 0:
+			graph.labeling(len(C_l)+1)
+			C_l.append([graph])
+	return C_l
+
+def Categories(Graph_list):
+	CL = Class_black_nodes(Graph_list)
+	GC = []
+	for g_list in CL:
+		GC += Class_leaves(g_list)
+	CL = []
+	for g_list in GC:
+		CL += Class_isomorphic(g_list)
+	return CL
+
+
 def build_until_m(All_graphs, m):
 	if m > 3:
 		k = len(All_graphs)
@@ -134,7 +206,7 @@ def build_until_m(All_graphs, m):
 					new_list += G3
 				else: 
 					break
-			#new_list = Categories(new_list)
+			new_list = Categories(new_list)
 			#flat_list = [item for l in new_list for item in l]
 			#print("Para ", n, " vertices blancos se generan ", len(flat_list), " graficas distintas.")
 			All_graphs.append(new_list)
