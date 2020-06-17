@@ -415,7 +415,7 @@ class strat_graph(nx.MultiGraph):
 		with edges with label 2 bold.
 		"""
 		from matplotlib.pyplot import show
-		#matplotlib.use("Agg")
+		matplotlib.use("Agg")
 		import matplotlib.pyplot as plt
 		def num_col(t):
 			if t==0:
@@ -436,7 +436,9 @@ class strat_graph(nx.MultiGraph):
 					with_labels=True, label = self.tag)
 			name = str(self.tag)+".png"
 			f.savefig(name)
-		show()
+		plt.clf()
+		plt.close()
+		#show()
         
         
     

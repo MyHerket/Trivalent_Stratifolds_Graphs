@@ -20,16 +20,7 @@ while(1):
 			for g in List:
 				if type(g) == list:
 					for h in g:
-						print(h.tag)
 						h.draw()
 				else:
-					print(g.tag)
 					g.draw()
 		break
-"""
-G1.labeling(4)
-print(G1.tag)
-path = nx.shortest_path_length(G1, 0,1, weight = 'weight')
-print(path)
-#print(G1.p_graph())
-"""
