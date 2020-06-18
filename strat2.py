@@ -177,22 +177,6 @@ def leaf_matrix(graph):
 	graph.M = matrix
 	return matrix
 
-def leaf_path_matrix(graph):
-	leaves = graph.leaves()
-	mini = 1000000
-	maxi = 0
-	for leaf1 in leaves:
-		a = []
-		for leaf2 in leaves:
-			path = nx.shortest_path_length(graph, leaf1, leaf2, weight = 'weight')
-			a.append(path)
-		a.sort()
-		if a[1] < mini: mini = a[1]
-		if a[-1] > maxi: maxi = a[-1]
-	graph.tag[4] = mini
-	graph.tag[5] = maxi
-	return (mini, maxi)
-
 def Class_isomorphic(list_graph):
 	C_l = []
 	for graph in list_graph:

@@ -28,7 +28,7 @@ def get_str(used=[],n=1):
 
 #####Stratifold-graph class
 class strat_graph(nx.MultiGraph):
-	tag = (0, 0, 0, 0, 0, 0)
+	tag = [0, 0, 0, 0, 0, 0]
 	M = []
 
 	def __init__(self,black=[],white=[],edges=None):
@@ -123,6 +123,22 @@ class strat_graph(nx.MultiGraph):
 			if self.degree(i) == 1:
 				l.append(i)
 		return l
+
+	def leaf_path_matrix(self):
+		leaves = self.leaves()
+		mini = 1000000
+		maxi = 0
+		for leaf1 in leaves:
+			a = []
+			for leaf2 in leaves:
+				path = nx.shortest_path_length(self, leaf1, leaf2, weight = 'weight')
+				a.append(path)
+			a.sort()
+			if a[1] < mini: mini = a[1]
+			if a[-1] > maxi: maxi = a[-1]
+		self.tag[4] = mini
+		self.tag[5] = maxi
+		return (mini, maxi)
 
 	def copy(self):
 		"""
@@ -325,7 +341,8 @@ class strat_graph(nx.MultiGraph):
 		return(H)	
 
 	def labeling(self, subnum):
-		self.tag = (len(self.white()), len(self.black()), len(self.leaves()), subnum)
+		self.tag = [len(self.white()), len(self.black()), len(self.leaves()), subnum, 0, 0]
+		self.leaf_path_matrix()
 
 	def old_O1(self,white_node,black_nodes1,black_nodes2,W0=None,W1=None,B=None):
 		"""
