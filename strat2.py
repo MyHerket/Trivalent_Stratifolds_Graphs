@@ -164,6 +164,36 @@ def Class_leaves(list_graph):
 		i += -1
 	return C_l
 
+def Class_min_path(list_graph):
+	C_l = []
+	for graph in list_graph:
+		k = graph.tag[4]
+		if len(C_l) < k:
+			for i in range(len(C_l), k):
+				C_l.append([])
+		C_l[k-1] += [graph]
+	i = len(C_l)-1
+	while i >= 0:
+		if len(C_l[i]) == 0:
+			C_l.pop(i)
+		i += -1
+	return C_l
+
+def Class_max_path(list_graph):
+	C_l = []
+	for graph in list_graph:
+		k = graph.tag[5]
+		if len(C_l) < k:
+			for i in range(len(C_l), k):
+				C_l.append([])
+		C_l[k-1] += [graph]
+	i = len(C_l)-1
+	while i >= 0:
+		if len(C_l[i]) == 0:
+			C_l.pop(i)
+		i += -1
+	return C_l
+
 def leaf_matrix(graph):
 	matrix = []
 	for leaf in graph.leaves():
@@ -213,6 +243,12 @@ def Categories(Graph_list):
 	GC = []
 	for g_list in CL:
 		GC += Class_leaves(g_list)
+	CL = []
+	for g_list in GC:
+		CL += Class_min_path(g_list)
+	GC = []
+	for g_list in CL:
+		GC += Class_max_path(g_list)
 	CL = []
 	for g_list in GC:
 		CL += Class_isomorphic(g_list)
