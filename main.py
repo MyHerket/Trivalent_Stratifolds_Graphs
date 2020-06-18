@@ -16,7 +16,9 @@ while(1):
 	n = input()
 	if int(n)>3:
 		build_until_m(All_graphs, int(n))
+		print("Estoy guardando")
 		for List in All_graphs:
+			print("Nueva lista")
 			for g in List:
 				if type(g) == list:
 					for h in g:
