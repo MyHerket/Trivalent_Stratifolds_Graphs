@@ -167,7 +167,7 @@ def Class_leaves(list_graph):
 def Class_min_path(list_graph):
 	C_l = []
 	for graph in list_graph:
-		k = graph.tag[4]
+		k = graph.tag[3]
 		if len(C_l) < k:
 			for i in range(len(C_l), k):
 				C_l.append([])
@@ -182,7 +182,7 @@ def Class_min_path(list_graph):
 def Class_max_path(list_graph):
 	C_l = []
 	for graph in list_graph:
-		k = graph.tag[5]
+		k = graph.tag[4]
 		if len(C_l) < k:
 			for i in range(len(C_l), k):
 				C_l.append([])

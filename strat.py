@@ -136,8 +136,8 @@ class strat_graph(nx.MultiGraph):
 			a.sort()
 			if a[1] < mini: mini = a[1]
 			if a[-1] > maxi: maxi = a[-1]
-		self.tag[4] = mini
-		self.tag[5] = maxi
+		self.tag[3] = mini
+		self.tag[4] = maxi
 		return (mini, maxi)
 
 	def copy(self):
@@ -341,7 +341,7 @@ class strat_graph(nx.MultiGraph):
 		return(H)	
 
 	def labeling(self, subnum):
-		self.tag = [len(self.white()), len(self.black()), len(self.leaves()), subnum, 0, 0]
+		self.tag = [len(self.white()), len(self.black()), len(self.leaves()), 0, 0, subnum]
 		self.leaf_path_matrix()
 
 	def old_O1(self,white_node,black_nodes1,black_nodes2,W0=None,W1=None,B=None):
@@ -450,11 +450,13 @@ class strat_graph(nx.MultiGraph):
 					width=wi,with_labels=True, label = self.tag)
 			name = str(self.tag)+".png"
 			f.savefig(name)
+			close(f)
 		else:
 			nx.draw(self,node_color=co,font_color='white',
 					with_labels=True, label = self.tag)
 			name = str(self.tag)+".png"
 			f.savefig(name)
+			close(f)
 		plt.clf()
 		plt.close()
 		#show()
