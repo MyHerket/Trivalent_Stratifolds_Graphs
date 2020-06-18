@@ -164,10 +164,40 @@ def Class_leaves(list_graph):
 		i += -1
 	return C_l
 
+def leaf_matrix(graph):
+	matrix = []
+	for leaf in graph.leaves():
+		a = []
+		for node in graph.nodes():
+			path = nx.shortest_path_length(graph, leaf,node, weight = 'weight')
+			a.append(path)
+			a.sort()
+		matrix.append(a)
+	matrix.sort()
+	graph.M = matrix
+	return matrix
+
+def leaf_path_matrix(graph):
+	leaves = graph.leaves()
+	mini = 1000000
+	maxi = 0
+	for leaf1 in leaves:
+		a = []
+		for leaf2 in leaves:
+			path = nx.shortest_path_length(graph, leaf1, leaf2, weight = 'weight')
+			a.append(path)
+		a.sort()
+		if a[1] < mini: mini = a[1]
+		if a[-1] > maxi: maxi = a[-1]
+	graph.tag[4] = mini
+	graph.tag[5] = maxi
+	return (mini, maxi)
+
 def Class_isomorphic(list_graph):
 	C_l = []
 	for graph in list_graph:
 		flag = 0
+		leaf_matrix(graph)
 		if len(C_l) == 0:
 			graph.labeling(1)
 			name = str(graph.tag) + ".png"
@@ -175,13 +205,17 @@ def Class_isomorphic(list_graph):
 				graph.draw()
 			C_l.append([graph])
 		for sub_list in C_l:
-			em = iso.numerical_multiedge_match('weight', [1, 2]) 
-			c = nx.is_isomorphic(graph, sub_list[0])
-			if c:
-				compare = nx.is_isomorphic(graph, sub_list[0], edge_match=em)
-				if compare:
-					flag = 1
-					break
+			compare = graph.M == sub_list[0].M
+			if compare:
+				em = iso.numerical_multiedge_match('weight', [1, 2]) 
+				c = nx.is_isomorphic(graph, sub_list[0])
+				if c:
+					compare = nx.is_isomorphic(graph, sub_list[0], edge_match=em)
+					if compare:
+						flag = 1
+						break
+					else:
+						print("Las matrices fueron iguales pero las graficas fueron distintas")
 		if flag == 0:
 			graph.labeling(len(C_l)+1)
 			name = str(graph.tag) + ".png"

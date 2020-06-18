@@ -28,7 +28,9 @@ def get_str(used=[],n=1):
 
 #####Stratifold-graph class
 class strat_graph(nx.MultiGraph):
-	tag = (0, 0, 0, 0)
+	tag = (0, 0, 0, 0, 0, 0)
+	M = []
+
 	def __init__(self,black=[],white=[],edges=None):
 		"""
 		Class initializer. May receive no arguments. 
