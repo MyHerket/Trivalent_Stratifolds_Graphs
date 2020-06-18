@@ -16,7 +16,7 @@ while(1):
 	n = input()
 	if int(n)>3:
 		build_until_m(All_graphs, int(n))
-		print("Estoy guardando")
+		"""print("Estoy guardando")
 		for List in All_graphs:
 			print("Nueva lista")
 			for g in List:
@@ -24,5 +24,8 @@ while(1):
 					for h in g:
 						h.draw()
 				else:
-					g.draw()
+					g.draw()"""
 		break
+
+path = nx.shortest_path_length(G2, 0,1, weight = 'weight')
+print(path)

@@ -1,5 +1,7 @@
 from strat import *
 import networkx.algorithms.isomorphism as iso
+import os.path
+from os import path
 
 def new_ord(letter):
 	return ord(letter)-96
@@ -168,6 +170,9 @@ def Class_isomorphic(list_graph):
 		flag = 0
 		if len(C_l) == 0:
 			graph.labeling(1)
+			name = str(graph.tag) + ".png"
+			if not(path.exists(name)):
+				graph.draw()
 			C_l.append([graph])
 		for sub_list in C_l:
 			em = iso.numerical_multiedge_match('weight', [1, 2]) 
@@ -175,12 +180,13 @@ def Class_isomorphic(list_graph):
 			if c:
 				compare = nx.is_isomorphic(graph, sub_list[0], edge_match=em)
 				if compare:
-					#graph.labeling(sub_list[0].tag[3])
-					#sub_list.append(graph)
 					flag = 1
 					break
 		if flag == 0:
 			graph.labeling(len(C_l)+1)
+			name = str(graph.tag) + ".png"
+			if not(path.exists(name)):
+				graph.draw()
 			C_l.append([graph])
 	return C_l
 
