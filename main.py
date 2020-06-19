@@ -15,12 +15,26 @@ All_graphs.append(Graph)
 #-------------------------------------------
 
 while(1):
-	print("Ingresa la cantidad de vertices blancos hasta la cual quiere construir sus graficas:")
+	print("What's the number of maximum white nodes in the graph?")
 	n = input()
 	if int(n)>3:
 		build_until_m(All_graphs, int(n))
+		c = 'S'
+		while(1):
+			print("Do you want to reprint a graph? (Y/N)")
+			c = input()
+			if c == 'Y':
+				print("Enter the numbers in the tag")
+				t = []
+				for i in range(6):
+					t.append(int(input()))
+				for graph in All_graphs[t[0]-2]:
+					if graph.tag == t:
+						graph.draw()
+						print("Se redibujo")
+						break
+			else: break
 		break
-
 
 #print(leaf_matrix(All_graphs[1][0]))
 #print(leaf_matrix(All_graphs[1][1]))

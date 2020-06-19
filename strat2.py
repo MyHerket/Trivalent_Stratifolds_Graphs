@@ -221,15 +221,8 @@ def Class_isomorphic(list_graph):
 		for sub_list in C_l:
 			compare = graph.M == sub_list[0].M
 			if compare:
-				em = iso.numerical_multiedge_match('weight', [1, 2]) 
-				c = nx.is_isomorphic(graph, sub_list[0])
-				if c:
-					compare = nx.is_isomorphic(graph, sub_list[0], edge_match=em)
-					if compare:
-						flag = 1
-						break
-					else:
-						print("Las matrices fueron iguales pero las graficas fueron distintas")
+				flag = 1
+				break
 		if flag == 0:
 			graph.labeling(len(C_l)+1)
 			name = str(graph.tag) + ".png"
