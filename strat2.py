@@ -264,5 +264,5 @@ def build_until_m(All_graphs, m):
 			new_list = Categories(new_list)
 			flat_list = [item for l in new_list for item in l]
 			print("Termine de construir para ", n, " vertices blancos ")
-			#print("Para ", n, " vertices blancos se generan ", len(flat_list), " graficas distintas.")
+			print("Para ", n, " vertices blancos se generan ", len(flat_list), " graficas distintas.")
 			All_graphs.append(flat_list)
