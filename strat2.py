@@ -4,9 +4,15 @@ import os.path
 from os import path
 
 def new_ord(letter):
+	"""
+	Turns a letter to the number of its position in the alphabet
+	"""
 	return ord(letter)-96
 
 def new_chr(pos):
+	"""
+	Turn a number to the letter in that position in the alphabet
+	"""
 	return chr(pos + 96)
 
 def O3(G1, G2, Node1, Node2):
@@ -18,7 +24,7 @@ def O3(G1, G2, Node1, Node2):
 		-Node1: Node in G1 where O1* will be performed.
 		-Node2: Node in G2 where O1* will be performed.
 		Returns a new strat_graph object
-		"""
+	"""
 	G = G1.copy()
 	W = next(get_int(G.white()))
 	B = next(get_str(G.black()))
@@ -135,6 +141,11 @@ def build_from_list_O3(list_graph, list2_graph):
 	
 
 def Class_black_nodes(list_graph):
+	"""
+	list_graph: A list of list of graphs. 
+	Creates a new list of lists of graphs by dividing the previous lists depending on the number of black nodes in each graph.
+	Returns the new list.
+	"""
 	C_l = []
 	for graph in list_graph:
 		k = len(graph.black())
@@ -150,6 +161,11 @@ def Class_black_nodes(list_graph):
 	return C_l
 
 def Class_leaves(list_graph):
+	"""
+	list_graph: A list of list of graphs. 
+	Creates a new list of lists of graphs by dividing the previous lists depending on the number of leaves in each graph.
+	Returns the new list.
+	"""
 	C_l = []
 	for graph in list_graph:
 		k = len(graph.leaves())
@@ -165,6 +181,11 @@ def Class_leaves(list_graph):
 	return C_l
 
 def Class_min_path(list_graph):
+	"""
+	list_graph: A list of list of graphs. 
+	Creates a new list of lists of graphs by dividing the previous lists depending on the minimum length of a path between two leaves in each graph.
+	Returns the new list.
+	"""
 	C_l = []
 	for graph in list_graph:
 		k = graph.tag[3]
@@ -180,6 +201,11 @@ def Class_min_path(list_graph):
 	return C_l
 
 def Class_max_path(list_graph):
+	"""
+	list_graph: A list of list of graphs. 
+	Creates a new list of lists of graphs by dividing the previous lists depending on the maximum length of a path between two leaves in each graph.
+	Returns the new list.
+	"""
 	C_l = []
 	for graph in list_graph:
 		k = graph.tag[4]
@@ -195,6 +221,11 @@ def Class_max_path(list_graph):
 	return C_l
 
 def leaf_matrix(graph):
+	"""
+	Given a graph, for each leaf in it, calculates the length of the minimum path from this leaf to every other node. 
+	Each leaf gives a row for the matrix. The next step is sort the numbers in the row, from low to high.
+	At last we sort the rows of the matrix from low to high.
+	"""
 	matrix = []
 	for leaf in graph.leaves():
 		a = []
@@ -208,6 +239,12 @@ def leaf_matrix(graph):
 	return matrix
 
 def Class_isomorphic(list_graph):
+	"""
+	list_graph: A list of list of graphs. 
+	Creates a new list of lists of graphs by dividing the previous lists depending on the leaf matrix in each graph.
+	Draws each of this graphs and save them with the name "[tag].png", where the tag deppends in each graph.
+	Returns the new list.
+	"""
 	C_l = []
 	for graph in list_graph:
 		flag = 0
@@ -232,6 +269,11 @@ def Class_isomorphic(list_graph):
 	return C_l
 
 def Categories(Graph_list):
+	"""
+	list_graph: A list of list of graphs. 
+	Creates a new list of lists of graphs by applying the previous lists the functions Class_black_nodes, Class_leaves, Class_min_path, Class_max_path, Class_isomorphic in that order.
+	Returns the new list.
+	"""
 	CL = Class_black_nodes(Graph_list)
 	GC = []
 	for g_list in CL:
@@ -249,6 +291,12 @@ def Categories(Graph_list):
 
 
 def build_until_m(All_graphs, m):
+	"""
+	All_graphs: A list of lists of graphs divided by the number of white nodes in them. At least it has the lists of 2 and 3 white nodes.
+	m: An integer greater than or equal to 4.
+	Creates a list of graphs with n white nodes using the lists of graphs with fewer white nodes. For more information read *.pdf
+	Appends this list to All_graphs.
+	"""
 	if m > 3:
 		k = len(All_graphs)
 		for n in range(k+2, m+1):
@@ -263,6 +311,5 @@ def build_until_m(All_graphs, m):
 					break
 			new_list = Categories(new_list)
 			flat_list = [item for l in new_list for item in l]
-			print("Termine de construir para ", n, " vertices blancos ")
-			print("Para ", n, " vertices blancos se generan ", len(flat_list), " graficas distintas.")
+			print("For ", n, " white nodes, we have ", len(flat_list), " different graphs.")
 			All_graphs.append(flat_list)

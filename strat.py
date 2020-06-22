@@ -28,8 +28,8 @@ def get_str(used=[],n=1):
 
 #####Stratifold-graph class
 class strat_graph(nx.MultiGraph):
-	tag = [0, 0, 0, 0, 0, 0]
-	M = []
+	tag = [0, 0, 0, 0, 0, 0] #[Number of white nodes, number of black nodes, number of leaves, minimum length of a path from one leaf to another,maximum length of a path from one leaf to another, id number]
+	M = [] #Leaf matrix
 
 	def __init__(self,black=[],white=[],edges=None):
 		"""
@@ -125,6 +125,9 @@ class strat_graph(nx.MultiGraph):
 		return l
 
 	def leaf_path_matrix(self):
+		"""
+		Returns the minimum and maximum length of a path from one leaf to another in self.
+		"""
 		leaves = self.leaves()
 		mini = 1000000
 		maxi = 0
@@ -340,8 +343,11 @@ class strat_graph(nx.MultiGraph):
 		H.addEdg([(white_node, new_black, 2), (new_white1, new_black, 1)])
 		return(H)	
 
-	def labeling(self, subnum):
-		self.tag = [len(self.white()), len(self.black()), len(self.leaves()), 0, 0, subnum]
+	def labeling(self, idnum):
+		"""
+		Given an id number (idnum), set the tag of self
+		"""
+		self.tag = [len(self.white()), len(self.black()), len(self.leaves()), 0, 0, idnum]
 		self.leaf_path_matrix()
 
 	def old_O1(self,white_node,black_nodes1,black_nodes2,W0=None,W1=None,B=None):
@@ -456,7 +462,7 @@ class strat_graph(nx.MultiGraph):
 					with_labels=True, label = self.tag)
 			name = str(self.tag)+".png"
 			f.savefig(name)
-			close(f)
+			plt.close(f)
 		plt.clf()
 		plt.close()
 		#show()
