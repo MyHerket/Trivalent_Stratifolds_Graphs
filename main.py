@@ -1,24 +1,15 @@
 from strat2 import *
+import random
 
-while(1):
+
+"""while(1):
 	print("What's the number of maximum white nodes in the graph?")
 	n = int(input())
+	All_graphs = []
 	if n>1:
-		G2 = b12()
-		G2.draw()
-		Graph = [G2] 
-		All_graphs =  [Graph]
-	if n>2:
-		G1 = b111()
-		G1.draw()
-		Graph = build_sub_O2(G2)
-		for g in Graph:
-			g.draw()
-		Graph.append(G1)
-		All_graphs.append(Graph)
-	if n>3:
-		build_until_m(All_graphs, int(n))
+		build_until_m(All_graphs, n)
 		c = 'S'
+		###
 		while(1):
 			print("Do you want to reprint a graph? (Y/N)")
 			c = input()
@@ -31,7 +22,12 @@ while(1):
 					if graph.tag == t:
 						graph.draw()
 						break
-			else: break
+			else: break ###
 		break
-	if n>1 and n <=3: break
 	if n<=1: 	print("The number of white vertex must be at least 2. Please enter a valid input.")
+"""
+G = b12()
+G.find_center()
+print("Termine con el primero")
+G2 = b111()
+G2.find_center()

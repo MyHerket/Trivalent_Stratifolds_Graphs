@@ -3,6 +3,7 @@ import networkx.algorithms.isomorphism as iso
 import os.path
 from os import path
 
+##Funtions to manipulate nodes' names 
 def new_ord(letter):
 	"""
 	Turns a letter to the number of its position in the alphabet
@@ -15,6 +16,8 @@ def new_chr(pos):
 	"""
 	return chr(pos + 96)
 
+
+#Building Functions
 def O3(G1, G2, Node1, Node2):
 	"""
 		Performs operation O1* for graphs G1 and G2.
@@ -84,8 +87,8 @@ def build_sub_O2(Graph):
 def build_sub_O3(Graph1, Graph2):
 	"""
 		For each white node in Graph1 and each white node in Graph2,
-		we create a new strat_graph object which is the result of performing the operation O1* in those nodes.
-		Return a list of the graphs obtained.
+		creates a new strat_graph object which is the result of performing the operation O1* on those nodes.
+		Returns a list of the graphs obtained.
 	"""
 
 	White1 = Graph1.white()
@@ -104,9 +107,8 @@ def build_sub_O3(Graph1, Graph2):
 	
 def build_from_list_O1(list_graph):
 	"""
-	For each graph in the list list_graph,	we perform build_sub_O1 on it. 
-	Then we build a new list of graphs with the elements of the previous lists. 
-	
+	Performs build_sub_O1 on each graph of the list list_graph. 
+	Then builds a new list with the elements of the previous lists generated.
 	"""
 	graphs = []
 	for grp in list_graph:
@@ -116,9 +118,9 @@ def build_from_list_O1(list_graph):
 
 def build_from_list_O2(list_graph):
 	"""
-	For each graph in the list list_graph,	we perform build_sub_O2 on it. 
-	Then we build a new list of graphs with the elements of the previous lists. 
 	
+	Performs build_sub_O2 on each graph of the list list_graph. 
+	Then builds a new list with the elements of the previous lists generated.
 	"""
 	graphs = []
 	for grp in list_graph:
@@ -128,9 +130,8 @@ def build_from_list_O2(list_graph):
 
 def build_from_list_O3(list_graph, list2_graph):
 	"""
-	For each graph in the list list_graph and list2_graph,	we perform build_sub_O3 on them. 
-	Then we build a new list of graphs with the elements of the previous lists. 
-	
+	Performs build_sub_O3 on every pair of graphs where the first one is an element of list_graph and the second is an element of list2_graph. 
+	Then builds a new list with the elements of the lists generated.
 	"""
 	graphs = []
 	for grp in list_graph:
@@ -140,9 +141,10 @@ def build_from_list_O3(list_graph, list2_graph):
 	return graphs
 	
 
+#Functions for classification
 def Class_black_nodes(list_graph):
 	"""
-	list_graph: A list of list of graphs. 
+	list_graph: A list of lists of graphs. 
 	Creates a new list of lists of graphs by dividing the previous lists depending on the number of black nodes in each graph.
 	Returns the new list.
 	"""
@@ -183,7 +185,7 @@ def Class_leaves(list_graph):
 def Class_min_path(list_graph):
 	"""
 	list_graph: A list of list of graphs. 
-	Creates a new list of lists of graphs by dividing the previous lists depending on the minimum length of a path between two leaves in each graph.
+	Creates a new list of lists of graphs by dividing the previous lists depending on  the length of the shortest path between two leaves in each graph.
 	Returns the new list.
 	"""
 	C_l = []
@@ -203,7 +205,7 @@ def Class_min_path(list_graph):
 def Class_max_path(list_graph):
 	"""
 	list_graph: A list of list of graphs. 
-	Creates a new list of lists of graphs by dividing the previous lists depending on the maximum length of a path between two leaves in each graph.
+	Creates a new list of lists of graphs by dividing the previous lists depending on the length of the largest path between two leaves in each graph.
 	Returns the new list.
 	"""
 	C_l = []
@@ -241,9 +243,10 @@ def leaf_matrix(graph):
 def Class_isomorphic(list_graph):
 	"""
 	list_graph: A list of list of graphs. 
-	Creates a new list of lists of graphs by dividing the previous lists depending on the leaf matrix in each graph.
-	Draws each of this graphs and save them with the name "[tag].png", where the tag deppends in each graph.
-	Returns the new list.
+	Creates a new list of lists of graphs by dividing the previous lists depending on the leaf matrix of each graph.\\ 
+    If two or more graphs have the same leaf matrix, delete all of them except one.\\
+    Draws each of the remaining graphs and save them with the name "[tag].png" following the nomenclature in "Trivalent_Stratifold_Documentation.pdf".\\
+    Then flatten the list of lists with one element, and returns this flatten list.
 	"""
 	C_l = []
 	for graph in list_graph:
@@ -268,13 +271,13 @@ def Class_isomorphic(list_graph):
 			C_l.append([graph])
 	return C_l
 
-def Categories(Graph_list):
+def Categories(list_graph):
 	"""
 	list_graph: A list of list of graphs. 
-	Creates a new list of lists of graphs by applying the previous lists the functions Class_black_nodes, Class_leaves, Class_min_path, Class_max_path, Class_isomorphic in that order.
+	Creates a new  list of graphs by applying to the previous lists the functions Class_black_nodes, Class_leaves, Class_min_path, Class_max_path, Class_isomorphic in that order.
 	Returns the new list.
 	"""
-	CL = Class_black_nodes(Graph_list)
+	CL = Class_black_nodes(list_graph)
 	GC = []
 	for g_list in CL:
 		GC += Class_leaves(g_list)
@@ -292,11 +295,24 @@ def Categories(Graph_list):
 
 def build_until_m(All_graphs, m):
 	"""
-	All_graphs: A list of lists of graphs divided by the number of white nodes in them. At least it has the lists of 2 and 3 white nodes.
-	m: An integer greater than or equal to 4.
-	Creates a list of graphs with n white nodes using the lists of graphs with fewer white nodes. For more information read *.pdf
-	Appends this list to All_graphs.
+	All_graphs must be a list of lists of graphs divided by the number of white nodes in them. 
+	m An integer greater than or equal to 2.
+	Creates the list of graphs with m white nodes without repetition, using the lists of graphs with fewer white nodes.Further details in Trivalent_Stratifold_Documentation.pdf
+	Returns All_graphs the list of lists of graphs with  n white nodes from 2 to m.\
 	"""
+	if m>1 and len(All_graphs) == 0:
+		G2 = b12()
+		G2.draw()
+		Graph = [G2] 
+		All_graphs =  [Graph]
+	if m>2 and len(All_graphs) == 1:
+		G1 = b111()
+		G1.draw()
+		Graph = build_sub_O2(G2)
+		for g in Graph:
+			g.draw()
+		Graph.append(G1)
+		All_graphs.append(Graph)
 	if m > 3:
 		k = len(All_graphs)
 		for n in range(k+2, m+1):

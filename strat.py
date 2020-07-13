@@ -28,8 +28,9 @@ def get_str(used=[],n=1):
 
 #####Stratifold-graph class
 class strat_graph(nx.MultiGraph):
-	tag = [0, 0, 0, 0, 0, 0] #[Number of white nodes, number of black nodes, number of leaves, minimum length of a path from one leaf to another,maximum length of a path from one leaf to another, id number]
+	tag = [0, 0, 0, 0, 0, 0] #[Number of white nodes, number of black nodes, number of leaves, length of the shortest path from one leaf to another,length of the largest path from one leaf to another, id number]
 	M = [] #Leaf matrix
+	root = 0
 
 	def __init__(self,black=[],white=[],edges=None):
 		"""
@@ -124,7 +125,25 @@ class strat_graph(nx.MultiGraph):
 				l.append(i)
 		return l
 
-	def leaf_path_matrix(self):
+	def find_center(self):
+		"""
+		Returns the name of the node that is the center of the tree.
+		"""
+		k = len(self.leaves())
+		maxi = 0 
+		for leaf1 in range(k):
+			for leaf2 in range(leaf1+1, k): 
+				for path in nx.all_simple_paths(self, source = self.leaves()[leaf1], target = self.leaves()[leaf2]):
+					print(path)
+					l_path = len(path)
+					if l_path > maxi: 
+						maxi = l_path
+						center = path[int((l_path-1)/2)]
+		self.root = center
+		print(self.root)
+
+
+	def leaf_path_values(self):
 		"""
 		Returns the minimum and maximum length of a path from one leaf to another in self.
 		"""
@@ -348,7 +367,7 @@ class strat_graph(nx.MultiGraph):
 		Given an id number (idnum), set the tag of self
 		"""
 		self.tag = [len(self.white()), len(self.black()), len(self.leaves()), 0, 0, idnum]
-		self.leaf_path_matrix()
+		self.leaf_path_values()
 			
 	def draw(self,trivalent=True):
 		"""
