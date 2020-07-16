@@ -134,13 +134,13 @@ class strat_graph(nx.MultiGraph):
 		for leaf1 in range(k):
 			for leaf2 in range(leaf1+1, k): 
 				for path in nx.all_simple_paths(self, source = self.leaves()[leaf1], target = self.leaves()[leaf2]):
-					print(path)
 					l_path = len(path)
 					if l_path > maxi: 
 						maxi = l_path
 						center = path[int((l_path-1)/2)]
 		self.root = center
 		print(self.root)
+
 
 
 	def leaf_path_values(self):
