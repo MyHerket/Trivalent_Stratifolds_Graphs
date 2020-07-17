@@ -75,12 +75,3 @@ def renaming(graph, source, father):
 		for p in path_list: string+=p
 		return string + b
 
-
-G = b111()
-G = G.O1(0)
-G= G.O1(0)
-#print(G[1]['a'][0]['weight'])
-X = center(G)
-print(X)
-R = renaming(G, X, -1)
-print(R)

@@ -253,22 +253,22 @@ def order_by_string(list_graph):
 		center(graph)
 		graph.string = renaming(graph, graph.root, -1)
 		if len(C_l) == 0:
-			graph.labeling(1)
-			name = str(graph.tag) + ".png"
-			if not(path.exists(name)):
-				graph.draw()
-			C_l.append([graph])
+			C_l.append(graph)
 		for sub_list in C_l:
-			compare = graph.string == sub_list[0].string
+			compare = graph.string == sub_list.string
 			if compare:
 				flag = 1
 				break
 		if flag == 0:
-			graph.labeling(len(C_l)+1)
-			name = str(graph.tag) + ".png"
+			C_l.append(graph)
+		C_l.sort(key = four_for_graph)
+		k = 1
+		for g in C_l: 
+			g.labeling(k)
+			name = str(g.tag) + ".png"
 			if not(path.exists(name)):
-				graph.draw()
-			C_l.append([graph])
+				g.draw()
+			k += 1
 	return C_l
 
 def order_by_isomorphic(list_graph):
@@ -356,7 +356,7 @@ def build_until_m(All_graphs, m):
 					new_list += G3
 				else: 
 					break
-			new_list = Categories(new_list)
-			flat_list = [item for l in new_list for item in l]
+			flat_list = Categories(new_list)
+			#flat_list = [item for l in new_list for item in l]
 			print("For ", n, " white nodes, we have ", len(flat_list), " different graphs.")
 			All_graphs.append(flat_list)
