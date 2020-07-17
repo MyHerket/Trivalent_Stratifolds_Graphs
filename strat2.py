@@ -240,6 +240,7 @@ def leaf_matrix(graph):
 	graph.M = matrix
 	return matrix
 
+
 def Class_isomorphic(list_graph):
 	"""
 	list_graph: A list of list of graphs. 
