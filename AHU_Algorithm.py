@@ -48,7 +48,7 @@ def four(name):
 def four_for_graph(graph):
 	return int(graph.string, 4)
 
-def renaming(graph, source, father):
+def rooted_tree(graph, source, father):
 	path_list = []
 	if father == -1:
 		a = '0'
@@ -62,13 +62,13 @@ def renaming(graph, source, father):
 			a = '2'
 			b = '3'
 	
-	if graph.degree(source) == 1 and father != -1:
+	if graph.degree(source) == 1:
 		return a+b
 	else:
 		neighbor = list(graph.neighbors(source))
 		if father != -1: neighbor.remove(father)
 		for n in neighbor:
-			paths = renaming(graph, n, source)
+			paths = rooted_tree(graph, n, source)
 			path_list.append(paths)
 		path_list.sort(key = four)
 		string = a

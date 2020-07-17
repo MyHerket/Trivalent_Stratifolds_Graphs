@@ -140,7 +140,7 @@ def build_from_list_O3(list_graph, list2_graph):
 	return graphs
 	
 
-#Functions for order_byification
+#Functions for order_by
 def order_by_black_nodes(list_graph):
 	"""
 	list_graph: A list of lists of graphs. 
@@ -221,24 +221,6 @@ def order_by_max_path(list_graph):
 		i += -1
 	return C_l
 
-def leaf_matrix(graph):
-	"""
-	Given a graph, for each leaf in it, calculates the length of the minimum path from this leaf to every other node. 
-	Each leaf gives a row for the matrix. The next step is sort the numbers in the row, from low to high.
-	At last we sort the rows of the matrix from low to high.
-	"""
-	matrix = []
-	for leaf in graph.leaves():
-		a = []
-		for node in graph.nodes():
-			path = nx.shortest_path_length(graph, leaf,node, weight = 'weight')
-			a.append(path)
-			a.sort()
-		matrix.append(a)
-	matrix.sort()
-	graph.M = matrix
-	return matrix
-
 def order_by_string(list_graph):
 	"""
 	list_graph: A list of list of graphs. 
@@ -251,7 +233,7 @@ def order_by_string(list_graph):
 	for graph in list_graph:
 		flag = 0
 		center(graph)
-		graph.string = renaming(graph, graph.root, -1)
+		graph.string = rooted_tree(graph, graph.root, -1)
 		if len(C_l) == 0:
 			C_l.append(graph)
 		for sub_list in C_l:
@@ -269,37 +251,6 @@ def order_by_string(list_graph):
 			if not(path.exists(name)):
 				g.draw()
 			k += 1
-	return C_l
-
-def order_by_isomorphic(list_graph):
-	"""
-	list_graph: A list of list of graphs. 
-	Creates a new list of lists of graphs by dividing the previous lists depending on the leaf matrix of each graph.\\ 
-    If two or more graphs have the same leaf matrix, delete all of them except one.\\
-    Draws each of the remaining graphs and save them with the name "[tag].png" following the nomenclature in "Trivalent_Stratifold_Documentation.pdf".\\
-    Then flatten the list of lists with one element, and returns this flatten list.
-	"""
-	C_l = []
-	for graph in list_graph:
-		flag = 0
-		leaf_matrix(graph)
-		if len(C_l) == 0:
-			graph.labeling(1)
-			name = str(graph.tag) + ".png"
-			if not(path.exists(name)):
-				graph.draw()
-			C_l.append([graph])
-		for sub_list in C_l:
-			compare = graph.M == sub_list[0].M
-			if compare:
-				flag = 1
-				break
-		if flag == 0:
-			graph.labeling(len(C_l)+1)
-			name = str(graph.tag) + ".png"
-			if not(path.exists(name)):
-				graph.draw()
-			C_l.append([graph])
 	return C_l
 
 def Categories(list_graph):

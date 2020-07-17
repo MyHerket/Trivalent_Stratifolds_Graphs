@@ -126,22 +126,6 @@ class strat_graph(nx.MultiGraph):
 				l.append(i)
 		return l
 
-	def find_center(self):
-		"""
-		Returns the name of the node that is the center of the tree.
-		"""
-		k = len(self.leaves())
-		maxi = 0 
-		for leaf1 in range(k):
-			for leaf2 in range(leaf1+1, k): 
-				for path in nx.all_simple_paths(self, source = self.leaves()[leaf1], target = self.leaves()[leaf2]):
-					l_path = len(path)
-					if l_path > maxi: 
-						maxi = l_path
-						center = path[int((l_path-1)/2)]
-		self.root = center
-		print(self.root)
-
 	def leaf_path_values(self):
 		"""
 		Returns the minimum and maximum length of a path from one leaf to another in self.
