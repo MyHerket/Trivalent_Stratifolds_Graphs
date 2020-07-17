@@ -1,5 +1,4 @@
-from strat import *
-import networkx.algorithms.isomorphism as iso
+from AHU_Algorithm import *
 import os.path
 from os import path
 
@@ -141,8 +140,8 @@ def build_from_list_O3(list_graph, list2_graph):
 	return graphs
 	
 
-#Functions for classification
-def Class_black_nodes(list_graph):
+#Functions for order_byification
+def order_by_black_nodes(list_graph):
 	"""
 	list_graph: A list of lists of graphs. 
 	Creates a new list of lists of graphs by dividing the previous lists depending on the number of black nodes in each graph.
@@ -162,7 +161,7 @@ def Class_black_nodes(list_graph):
 		i += -1
 	return C_l
 
-def Class_leaves(list_graph):
+def order_by_leaves(list_graph):
 	"""
 	list_graph: A list of list of graphs. 
 	Creates a new list of lists of graphs by dividing the previous lists depending on the number of leaves in each graph.
@@ -182,7 +181,7 @@ def Class_leaves(list_graph):
 		i += -1
 	return C_l
 
-def Class_min_path(list_graph):
+def order_by_min_path(list_graph):
 	"""
 	list_graph: A list of list of graphs. 
 	Creates a new list of lists of graphs by dividing the previous lists depending on  the length of the shortest path between two leaves in each graph.
@@ -202,7 +201,7 @@ def Class_min_path(list_graph):
 		i += -1
 	return C_l
 
-def Class_max_path(list_graph):
+def order_by_max_path(list_graph):
 	"""
 	list_graph: A list of list of graphs. 
 	Creates a new list of lists of graphs by dividing the previous lists depending on the length of the largest path between two leaves in each graph.
@@ -240,8 +239,39 @@ def leaf_matrix(graph):
 	graph.M = matrix
 	return matrix
 
+def order_by_string(list_graph):
+	"""
+	list_graph: A list of list of graphs. 
+	Creates a new list of lists of graphs by dividing the previous lists depending on the leaf matrix of each graph.\\ 
+    If two or more graphs have the same leaf matrix, delete all of them except one.\\
+    Draws each of the remaining graphs and save them with the name "[tag].png" following the nomenclature in "Trivalent_Stratifold_Documentation.pdf".\\
+    Then flatten the list of lists with one element, and returns this flatten list.
+	"""
+	C_l = []
+	for graph in list_graph:
+		flag = 0
+		center(graph)
+		graph.string = renaming(graph, graph.root, -1)
+		if len(C_l) == 0:
+			graph.labeling(1)
+			name = str(graph.tag) + ".png"
+			if not(path.exists(name)):
+				graph.draw()
+			C_l.append([graph])
+		for sub_list in C_l:
+			compare = graph.string == sub_list[0].string
+			if compare:
+				flag = 1
+				break
+		if flag == 0:
+			graph.labeling(len(C_l)+1)
+			name = str(graph.tag) + ".png"
+			if not(path.exists(name)):
+				graph.draw()
+			C_l.append([graph])
+	return C_l
 
-def Class_isomorphic(list_graph):
+def order_by_isomorphic(list_graph):
 	"""
 	list_graph: A list of list of graphs. 
 	Creates a new list of lists of graphs by dividing the previous lists depending on the leaf matrix of each graph.\\ 
@@ -275,22 +305,22 @@ def Class_isomorphic(list_graph):
 def Categories(list_graph):
 	"""
 	list_graph: A list of list of graphs. 
-	Creates a new  list of graphs by applying to the previous lists the functions Class_black_nodes, Class_leaves, Class_min_path, Class_max_path, Class_isomorphic in that order.
+	Creates a new  list of graphs by applying to the previous lists the functions order_by_black_nodes, order_by_leaves, order_by_min_path, order_by_max_path, order_by_isomorphic in that order.
 	Returns the new list.
 	"""
-	CL = Class_black_nodes(list_graph)
+	CL = order_by_black_nodes(list_graph)
 	GC = []
 	for g_list in CL:
-		GC += Class_leaves(g_list)
+		GC += order_by_leaves(g_list)
 	CL = []
 	for g_list in GC:
-		CL += Class_min_path(g_list)
+		CL += order_by_min_path(g_list)
 	GC = []
 	for g_list in CL:
-		GC += Class_max_path(g_list)
+		GC += order_by_max_path(g_list)
 	CL = []
 	for g_list in GC:
-		CL += Class_isomorphic(g_list)
+		CL += order_by_string(g_list)
 	return CL
 
 

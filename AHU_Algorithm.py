@@ -29,7 +29,6 @@ def clean_leaf(graph, leaf):
 
 def center(graph):
 	G = graph.copy()
-	#paths = []
 	largest = 0
 	while len(G.leaves()) > 0:
 		node = list(G.leaves())[0]
@@ -38,10 +37,9 @@ def center(graph):
 			if p[-1] > largest:
 				largest = p[-1]
 				l_path = p
-		#paths += dfs_list
 		clean_leaf(G, node)
 	center_i = int((l_path[-1]-1)/2)
-	#print("El camino mas largo fue: ", l_path, " y el centro es ", l_path[center_i])
+	graph.root = l_path[center_i]
 	return l_path[center_i]
 
 def four(name):

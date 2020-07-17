@@ -30,6 +30,7 @@ def get_str(used=[],n=1):
 class strat_graph(nx.MultiGraph):
 	tag = [0, 0, 0, 0, 0, 0] #[Number of white nodes, number of black nodes, number of leaves, length of the shortest path from one leaf to another,length of the largest path from one leaf to another, id number]
 	M = [] #Leaf matrix
+	string = 'a'
 	root = 0
 
 	def __init__(self,black=[],white=[],edges=None):

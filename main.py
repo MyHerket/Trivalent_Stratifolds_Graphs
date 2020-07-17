@@ -2,14 +2,13 @@ from strat2 import *
 import random
 
 
-"""while(1):
+while(1):
 	print("What's the number of maximum white nodes in the graph?")
 	n = int(input())
 	All_graphs = []
 	if n>1:
 		build_until_m(All_graphs, n)
 		c = 'S'
-		###
 		while(1):
 			print("Do you want to reprint a graph? (Y/N)")
 			c = input()
@@ -25,9 +24,3 @@ import random
 			else: break ###
 		break
 	if n<=1: 	print("The number of white vertex must be at least 2. Please enter a valid input.")
-"""
-G = b12()
-G.find_center()
-print("Termine con el primero")
-G2 = b111()
-G2.find_center()
