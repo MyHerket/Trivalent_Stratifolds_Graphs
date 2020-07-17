@@ -45,6 +45,9 @@ def center(graph):
 def four(name):
 	return int(name, 4)
 
+def four_for_graph(graph):
+	return int(graph.string, 4)
+
 def renaming(graph, source, father):
 	path_list = []
 	if father == -1:
