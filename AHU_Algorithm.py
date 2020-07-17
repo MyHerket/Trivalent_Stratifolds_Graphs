@@ -15,9 +15,22 @@ def dfs(graph, source, father):
 				path_list.append([source]+p)
 		return path_list
 
+def clean_leaf(graph, leaf):
+	neighbor = list(graph.neighbors(leaf))[0]
+	if graph.degree(neighbor) == 1:
+		graph.remove_node(neighbor)
+		graph.remove_node(leaf)
+	elif graph.degree(neighbor) == 2:
+		graph.remove_node(leaf)
+		clean_leaf(graph, neighbor)
+	else: 
+		graph.remove_node(leaf)
+	return
+
+
 def center(graph):
 	G = graph.copy()
-	paths = []
+	#paths = []
 	largest = 0
 	while len(G.leaves()) > 0:
 		node = list(G.leaves())[0]
@@ -26,14 +39,11 @@ def center(graph):
 			if p[-1] > largest:
 				largest = p[-1]
 				l_path = p
-		paths += dfs_list
-		neighbor = list(G.neighbors(node))[0]
-		if G.degree(neighbor) == 2: 
-			G.remove_node(neighbor)
-		G.remove_node(node)
-	print("El camino mas largo fue: ", l_path)
-	print("El dfs es: ")
-	for p in paths: print(p)
+		#paths += dfs_list
+		clean_leaf(G, node)
+	center_i = int((l_path[-1]-1)/2)
+	#print("El camino mas largo fue: ", l_path, " y el centro es ", l_path[center_i])
+	return l_path[center_i]
 
 
 
@@ -41,4 +51,5 @@ def center(graph):
 G = b111()
 G = G.O1(0)
 G= G.O1(0)
-prueba = center(G)
+
+print(center(G))

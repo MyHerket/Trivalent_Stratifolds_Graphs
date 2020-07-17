@@ -141,8 +141,6 @@ class strat_graph(nx.MultiGraph):
 		self.root = center
 		print(self.root)
 
-
-
 	def leaf_path_values(self):
 		"""
 		Returns the minimum and maximum length of a path from one leaf to another in self.
