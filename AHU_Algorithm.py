@@ -30,6 +30,7 @@ def clean_leaf(graph, leaf):
 def center(graph):
 	G = graph.copy()
 	largest = 0
+	shortest = 100000000
 	while len(G.leaves()) > 0:
 		node = list(G.leaves())[0]
 		dfs_list = dfs(G, node, -1)
@@ -37,9 +38,13 @@ def center(graph):
 			if p[-1] > largest:
 				largest = p[-1]
 				l_path = p
+			if p[-1] < shortest: 
+				shortest = p[-1]
 		clean_leaf(G, node)
 	center_i = int((l_path[-1]-1)/2)
 	graph.root = l_path[center_i]
+	graph.tag[3] = shortest
+	graph.tag[4] = largest
 	return l_path[center_i]
 
 def four(name):

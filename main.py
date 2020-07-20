@@ -21,6 +21,6 @@ while(1):
 					if graph.tag == t:
 						graph.draw()
 						break
-			else: break ###
+			else: break 
 		break
 	if n<=1: 	print("The number of white vertex must be at least 2. Please enter a valid input.")
