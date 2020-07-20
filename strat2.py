@@ -308,6 +308,5 @@ def build_until_m(All_graphs, m):
 				else: 
 					break
 			flat_list = Categories(new_list)
-			#flat_list = [item for l in new_list for item in l]
 			print("For ", n, " white nodes, we have ", len(flat_list), " different graphs.")
 			All_graphs.append(flat_list)

@@ -349,8 +349,11 @@ class strat_graph(nx.MultiGraph):
 		"""
 		Given an id number (idnum), set the tag of self
 		"""
-		self.tag = [len(self.white()), len(self.black()), len(self.leaves()), 0, 0, idnum]
-		self.leaf_path_values()
+		self.tag[0] = len(self.white())
+		self.tag[1] = len(self.black())
+		self.tag[2] = len(self.leaves())
+		self.tag[5] = idnum
+		self.leaf_path_values() #Esto obtiene el máximo y mínimo del camino pero no sé si sea la mejor manera de obtenerlo
 			
 	def draw(self,trivalent=True):
 		"""
