@@ -2,7 +2,7 @@ from AHU_Algorithm import *
 import os.path
 from os import path
 
-##Funtions to manipulate nodes' names 
+##Funtions to manipulate nodes' names
 def new_ord(letter):
 	"""
 	Turns a letter to the number of its position in the alphabet
@@ -62,7 +62,7 @@ def build_sub_O1(Graph):
 		temp_g.labeling(k)
 		sub_list.append(temp_g)
 		k +=1
-	
+
 	return(sub_list)
 
 def build_sub_O2(Graph):
@@ -80,7 +80,7 @@ def build_sub_O2(Graph):
 		temp_g.labeling(k)
 		sub_list.append(temp_g)
 		k+=1
-	
+
 	return(sub_list)
 
 def build_sub_O3(Graph1, Graph2):
@@ -101,12 +101,12 @@ def build_sub_O3(Graph1, Graph2):
 			temp_g.labeling(k)
 			sub_list.append(temp_g)
 			k += 1
-	
+
 	return(sub_list)
-	
+
 def build_from_list_O1(list_graph):
 	"""
-	Performs build_sub_O1 on each graph of the list list_graph. 
+	Performs build_sub_O1 on each graph of the list list_graph.
 	Then builds a new list with the elements of the previous lists generated.
 	"""
 	graphs = []
@@ -117,8 +117,8 @@ def build_from_list_O1(list_graph):
 
 def build_from_list_O2(list_graph):
 	"""
-	
-	Performs build_sub_O2 on each graph of the list list_graph. 
+
+	Performs build_sub_O2 on each graph of the list list_graph.
 	Then builds a new list with the elements of the previous lists generated.
 	"""
 	graphs = []
@@ -129,7 +129,7 @@ def build_from_list_O2(list_graph):
 
 def build_from_list_O3(list_graph, list2_graph):
 	"""
-	Performs build_sub_O3 on every pair of graphs where the first one is an element of list_graph and the second is an element of list2_graph. 
+	Performs build_sub_O3 on every pair of graphs where the first one is an element of list_graph and the second is an element of list2_graph.
 	Then builds a new list with the elements of the lists generated.
 	"""
 	graphs = []
@@ -138,12 +138,12 @@ def build_from_list_O3(list_graph, list2_graph):
 			temp_list = build_sub_O3(grp, grp2)
 			graphs += temp_list
 	return graphs
-	
+
 
 #Functions for order_by
 def order_by_black_nodes(list_graph):
 	"""
-	list_graph: A list of lists of graphs. 
+	list_graph: A list of lists of graphs.
 	Creates a new list of lists of graphs by dividing the previous lists depending on the number of black nodes in each graph.
 	Returns the new list.
 	"""
@@ -163,7 +163,7 @@ def order_by_black_nodes(list_graph):
 
 def order_by_leaves(list_graph):
 	"""
-	list_graph: A list of list of graphs. 
+	list_graph: A list of list of graphs.
 	Creates a new list of lists of graphs by dividing the previous lists depending on the number of leaves in each graph.
 	Returns the new list.
 	"""
@@ -183,7 +183,7 @@ def order_by_leaves(list_graph):
 
 def order_by_min_path(list_graph):
 	"""
-	list_graph: A list of list of graphs. 
+	list_graph: A list of list of graphs.
 	Creates a new list of lists of graphs by dividing the previous lists depending on  the length of the shortest path between two leaves in each graph.
 	Returns the new list.
 	"""
@@ -203,7 +203,7 @@ def order_by_min_path(list_graph):
 
 def order_by_max_path(list_graph):
 	"""
-	list_graph: A list of list of graphs. 
+	list_graph: A list of list of graphs.
 	Creates a new list of lists of graphs by dividing the previous lists depending on the length of the largest path between two leaves in each graph.
 	Returns the new list.
 	"""
@@ -223,8 +223,8 @@ def order_by_max_path(list_graph):
 
 def order_by_string(list_graph):
 	"""
-	list_graph: A list of list of graphs. 
-	Creates a new list of lists of graphs by dividing the previous lists depending on the leaf matrix of each graph.\\ 
+	list_graph: A list of list of graphs.
+	Creates a new list of lists of graphs by dividing the previous lists depending on the leaf matrix of each graph.\\
     If two or more graphs have the same leaf matrix, delete all of them except one.\\
     Draws each of the remaining graphs and save them with the name "[tag].png" following the nomenclature in "Trivalent_Stratifold_Documentation.pdf".\\
     Then flatten the list of lists with one element, and returns this flatten list.
@@ -244,18 +244,21 @@ def order_by_string(list_graph):
 		if flag == 0:
 			C_l.append(graph)
 		C_l.sort(key = four_for_graph)
-		k = 1
-		for g in C_l: 
-			g.labeling(k)
-			name = str(g.tag) + ".png"
-			if not(path.exists(name)):
-				g.draw()
-			k += 1
+	k = 1
+	for g in C_l:
+		g.labeling(k)
+		name = str(g.tag) + ".png"
+		#center(g, True);
+		#print(name, g.root, g.string)
+
+		#if not(path.exists(name)):
+		#	g.draw()
+		k += 1
 	return C_l
 
 def Categories(list_graph):
 	"""
-	list_graph: A list of list of graphs. 
+	list_graph: A list of list of graphs.
 	Creates a new  list of graphs by applying to the previous lists the functions order_by_black_nodes, order_by_leaves, order_by_min_path, order_by_max_path, order_by_isomorphic in that order.
 	Returns the new list.
 	"""
@@ -277,7 +280,7 @@ def Categories(list_graph):
 
 def build_until_m(All_graphs, m):
 	"""
-	All_graphs must be a list of lists of graphs divided by the number of white nodes in them. 
+	All_graphs must be a list of lists of graphs divided by the number of white nodes in them.
 	m An integer greater than or equal to 2.
 	Creates the list of graphs with m white nodes without repetition, using the lists of graphs with fewer white nodes.Further details in Trivalent_Stratifold_Documentation.pdf
 	Returns All_graphs the list of lists of graphs with  n white nodes from 2 to m.\
@@ -285,7 +288,7 @@ def build_until_m(All_graphs, m):
 	if m>1 and len(All_graphs) == 0:
 		G2 = b12()
 		G2.draw()
-		Graph = [G2] 
+		Graph = [G2]
 		All_graphs =  [Graph]
 	if m>2 and len(All_graphs) == 1:
 		G1 = b111()
@@ -305,7 +308,7 @@ def build_until_m(All_graphs, m):
 				if n-i-5 >= 0:
 					G3 = build_from_list_O3(All_graphs[i], All_graphs[n-i-5])
 					new_list += G3
-				else: 
+				else:
 					break
 			flat_list = Categories(new_list)
 			print("For ", n, " white nodes, we have ", len(flat_list), " different graphs.")
