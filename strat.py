@@ -14,7 +14,7 @@ def get_int(used=[]):
 		if a not in used:
 			yield a
 		a=a+1
-        
+
 def get_str(used=[],n=1):
 	"""
 	Generator of strings that are not in 'used'
@@ -35,7 +35,7 @@ class strat_graph(nx.MultiGraph):
 
 	def __init__(self,black=[],white=[],edges=None):
 		"""
-		Class initializer. May receive no arguments. 
+		Class initializer. May receive no arguments.
 		If edges are given,  all vertices involved must belong
 		to black or to white (and to only one).
 		Raises exception if results in non-bipartite graph
@@ -56,7 +56,7 @@ class strat_graph(nx.MultiGraph):
 					raise Exception('Incorrect edge(s)')
 			self.add_weighted_edges_from([e for e in edges if len(e)==3])
 			self.add_edges_from([e for e in edges if len(e)==2],weight=1)
-			
+
 
 	def addEdg(self,edges):
 		"""
@@ -90,7 +90,7 @@ class strat_graph(nx.MultiGraph):
 			raise Exception('Incorrect set(s)')
 		self.add_nodes_from(white,bipartite=0)
 		self.add_nodes_from(black,bipartite=1)
-		
+
 	def black_vals(self):
 		"""
 		Returns dictionary where keys are black vertices and
@@ -115,13 +115,13 @@ class strat_graph(nx.MultiGraph):
 		Returns set of black vertices
 		"""
 		return set([n for n, d in self.nodes(data=True) if d['bipartite']==1])
-		
+
 	def leaves(self):
 		"""
 		Returns list of nodes with degree 1
 		"""
 		l = []
-		for i in self.white(): 
+		for i in self.white():
 			if self.degree(i) == 1:
 				l.append(i)
 		return l
@@ -169,11 +169,11 @@ class strat_graph(nx.MultiGraph):
 		leaves=[l for (l,d) in  nx.degree(self) if d==1]
 		if not all([self.nodes()[L]['bipartite']==0 for L in leaves]):
 			return False
-		
+
 		#Black vertices adjacent to terminal vertices should have degree 2
 		#else, degree 3
 		#there must be at least one black vertex with degree 3
-		
+
 		#b1 is set of black vertices adjacent to terminal vertices,
 		#which now we know are all white
 		b1=set([b for l in leaves for b in self[l]])
@@ -186,7 +186,7 @@ class strat_graph(nx.MultiGraph):
 		check_3= set()<b2
 		if not (check_b1 and check_b2 and check_3):
 			return False
-		
+
 		#Every non-terminal white vertex has degree 2
 		nt_white=self.white().difference(set(leaves))
 		if not all([nx.degree(self)[w]==2 for w in nt_white]):
@@ -202,7 +202,7 @@ class strat_graph(nx.MultiGraph):
 		if not(check_termW and check_not_termW):
 			return False
 		return True
-		
+
 	def is_21_collapsible(self):
 		"""
 		Returns None if self is not a 2,1-collapsible tree.
@@ -252,10 +252,10 @@ class strat_graph(nx.MultiGraph):
 		edges=list(self.subgraph(nodes).edges(data='weight'))
 		H=strat_graph(black=B,white=W,edges=edges)
 		return H
-		
+
 	def St_B(self):
 		"""
-		Returns list of components of St(B), the closed star 
+		Returns list of components of St(B), the closed star
 		of the set of black vertices with degree 3
 		"""
 		B=set([b for b in self.black() if self.degree(b)==3])
@@ -280,7 +280,7 @@ class strat_graph(nx.MultiGraph):
 		for C in comp:
 			ans.append(H.subg(C))
 		return ans
-		
+
 	def is_simply_connected(self):
 		"""
 		Implementation of theorem 2. Checks if self is a simply connected
@@ -319,23 +319,23 @@ class strat_graph(nx.MultiGraph):
 		if flag:
 			return False
 		return True
-		
+
 	def O1(self, white_node):
 		"""
-		Performs operation O1 on a copy, which is returned. 
+		Performs operation O1 on a copy, which is returned.
 		-white_node is the node where O1 will take place.
 		"""
 		H = self.copy()
 		new_black  = next(get_str(H.black()))
 		new_white1 = next(get_int(H.white()))
-		new_white2 = new_white1 + 1 
+		new_white2 = new_white1 + 1
 		H.addNod([new_black], [new_white1, new_white2])
 		H.addEdg([(white_node, new_black), (new_white1, new_black), (new_white2, new_black)])
 		return(H)
 
 	def O2(self, white_node):
 		"""
-		Performs operation O2 on a copy, which is returned. 
+		Performs operation O2 on a copy, which is returned.
 		-white_node is the node where O1 will take place.
 		"""
 		H = self.copy()
@@ -343,7 +343,7 @@ class strat_graph(nx.MultiGraph):
 		new_white1 = next(get_int(H.white()))
 		H.addNod([new_black], [new_white1])
 		H.addEdg([(white_node, new_black, 2), (new_white1, new_black, 1)])
-		return(H)	
+		return(H)
 
 	def labeling(self, idnum):
 		"""
@@ -354,12 +354,12 @@ class strat_graph(nx.MultiGraph):
 		self.tag[2] = len(self.leaves())
 		self.tag[5] = idnum
 		self.leaf_path_values() #Esto obtiene el máximo y mínimo del camino pero no sé si sea la mejor manera de obtenerlo
-			
-	def draw(self,trivalent=True):
+
+	def draw(self,trivalent=True, dir="./"):
 		"""
 		Function for drawing the graph.
 		Calls the function draw from networkx, coloring black vertices black
-		and white vertices gray. 
+		and white vertices gray.
 		If trivalent=True, asserts if graph is trivalent and then draws graph,
 		with edges with label 2 bold.
 		"""
@@ -378,21 +378,21 @@ class strat_graph(nx.MultiGraph):
 			wi=[e[2]**2 for e in list(self.edges(data='weight'))]
 			nx.draw(self,node_color=co,font_color='white',
 					width=wi,with_labels=True, label = self.tag)
-			name = str(self.tag)+".png"
+			name = dir+str(self.tag)+".png"
 			f.savefig(name)
 			plt.close(f)
 		else:
 			nx.draw(self,node_color=co,font_color='white',
 					with_labels=True, label = self.tag)
-			name = str(self.tag)+".png"
+			name = dir+str(self.tag)+".png"
 			f.savefig(name)
 			plt.close(f)
 		plt.clf()
 		plt.close()
 		#show()
-        
-        
-    
+
+
+
 
 def b111(black=None,white=None):
 	"""
@@ -410,7 +410,7 @@ def b111(black=None,white=None):
 	G.addEdg(edges=[(white[0],black),(white[1],black),(white[2],black)])
 	G.labeling(1)
 	return(G)
-    
+
 def b12(black=None,white=None):
 	"""
 	Returns b111-tree

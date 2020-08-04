@@ -247,12 +247,9 @@ def order_by_string(list_graph):
 	k = 1
 	for g in C_l:
 		g.labeling(k)
-		name = str(g.tag) + ".png"
-		#center(g, True);
-		#print(name, g.root, g.string)
-
-		#if not(path.exists(name)):
-		#	g.draw()
+		name = "images/"+str(g.tag) + ".png"
+		if not(path.exists(name)):
+			g.draw(dir="images/")
 		k += 1
 	return C_l
 
@@ -287,15 +284,15 @@ def build_until_m(All_graphs, m):
 	"""
 	if m>1 and len(All_graphs) == 0:
 		G2 = b12()
-		G2.draw()
+		G2.draw(dir="images/")
 		Graph = [G2]
 		All_graphs =  [Graph]
 	if m>2 and len(All_graphs) == 1:
 		G1 = b111()
-		G1.draw()
+		G1.draw(dir="images/")
 		Graph = build_sub_O2(G2)
 		for g in Graph:
-			g.draw()
+			g.draw(dir="images/")
 		Graph.append(G1)
 		All_graphs.append(Graph)
 	if m > 3:
