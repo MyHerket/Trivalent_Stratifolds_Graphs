@@ -244,13 +244,9 @@ def order_by_string(list_graph):
 		if flag == 0:
 			C_l.append(graph)
 		C_l.sort(key = four_for_graph)
-	k = 1
-	for g in C_l:
-		g.labeling(k)
-		name = "images/"+str(g.tag) + ".png"
-		if not(path.exists(name)):
-			g.draw(dir="images/")
-		k += 1
+
+	drawsGraphs(C_l)
+
 	return C_l
 
 def Categories(list_graph):
@@ -274,6 +270,75 @@ def Categories(list_graph):
 		CL += order_by_string(g_list)
 	return CL
 
+def drawGraphs(C_l):
+	k = 1
+	for g in C_l:
+		g.labeling(k)
+		name = "images/"+str(g.tag) + ".png"
+		if not(path.exists(name)):
+			g.draw(dir="images/")
+		k += 1
+
+
+class Freeze_Strat_Graph:
+	"""
+	This class is used to create an unmutable version of stratGraph class.
+	It makes possible to use StragGraphs as elements of a Set, gaining this way
+	an O(1) algotrithm for recognizing wether or not a recently created StratGraph
+	as already been created.
+	"""
+	def __init__(self, stratGraph):
+		self.stratGraph = stratGraph
+		self.center = center(stratGraph)
+		self.string = rooted_tree(stratGraph, self.center , -1)
+		self.whites = getDistinctWhites(stratGraph)
+
+	def __eq__(self, other):
+		return self.string == other.string
+
+	def __hash__(self):
+		return hash(self.string)
+
+    #This is replacing the original function white() add
+	#returns the list of distinct whites under automorphism
+	def white(self):
+		return self.whites
+
+	# FIXME. The next series of functions are just wrapper of the original function
+	# from stratGraph. We may need to rewrite the code where they are been used.
+	def labeling(self,k):
+		self.stratGraph.labeling(k)
+	def O1(self, white_node):
+		return self.stratGraph.O1(white_node)
+	def O2(self, white_node):
+		return self.stratGraph.O2(white_node)
+	def copy(self):
+		return self.stratGraph.copy()
+	def edges(self, data):
+		return self.stratGraph.edges(data=data)
+
+
+
+def unFreezList(set_of_freezed_graphs):
+	"""
+	This functions recive a Set of Freezed StratGraphs and returns a list
+	of unfreezed StratGraphs.
+	"""
+	L = []
+	for fg in set_of_freezed_graphs:
+		L.append(fg.stratGraph)
+	return L
+
+def CategoriesX(list_graph):
+	"""
+	Creates a set of distinct Freezed StratGraphs from a list of StratGraphs.
+	This is the suggested replacement for Categories function.
+	"""
+	all=set([])
+	for g in list_graph:
+		all.add(Freeze_Strat_Graph(g))
+
+	return all
 
 def build_until_m(All_graphs, m):
 	"""
@@ -307,6 +372,8 @@ def build_until_m(All_graphs, m):
 					new_list += G3
 				else:
 					break
-			flat_list = Categories(new_list)
-			print("For ", n, " white nodes, we have ", len(flat_list), " different graphs.")
+			flat_list = CategoriesX(new_list)
+			print("For ", n, " white nodes, we have ", len(flat_list), " different graphs. Total de graficas creadas", len(new_list) )
+
+			#drawGraphs(unFreezList(flat_list))
 			All_graphs.append(flat_list)

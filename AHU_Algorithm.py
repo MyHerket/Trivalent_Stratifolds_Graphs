@@ -97,19 +97,61 @@ def rooted_tree(graph, source, father):
 		for p in path_list: string+=p
 		return string + b
 
+def dfsGetDistinctWhites(graph, source, father):
+	"""
+	This the DFS recursive implementation to compute the distinct white vertices
+	of graph under automorphism.
+	"""
+	if graph.degree(source) == 1 and father != -1:
+		if graph.nodes[source]['bipartite'] == 0 :
+			return [source]
+		else:
+			return []
+	else:
+		neighbor = list(graph.neighbors(source))
+		if father != -1: neighbor.remove(father)
+		whitesDir = {}
+		length = 0
+		for n in neighbor:
+			node_whites = dfsGetDistinctWhites(graph, n, source)
+			whitesDir[graph.nodes[n]['word']] = node_whites
+		if graph.nodes[source]['bipartite'] == 0:
+			return sum(whitesDir.values(),[source])
+		else:
+			return sum(whitesDir.values(),[])
+
+def getDistinctWhites(G):
+	"""
+	Returns the distinct number of vertices under automorphisms of G.
+	"""
+	root = list(G.nodes())[0]
+	if hasattr(G, 'root'):
+		root = G.root
+
+	whites = dfsGetDistinctWhites(G, root, -1)
+
+	return whites
+
 def test():
 	G2=strat_graph()
 	#edgs=[(1,'a',2),(1,'b',2),(2,'a'),(3,'b')]
-	edgs=[(0,'a'),(0, 'b'),(1,'a',2), (2,'b'),(3,'b')]
+	#edgs=[(0,'a'),(0, 'b'),(1,'a',2), (2,'b'),(3,'b')]
+	#edgs=[(0,'a',2),(2,'b'),(3,'c'), (4,'d'), (1,'a'),(1,'b',2),(1,'c',2),(1,'d',2)]
+	#edgs=[(1,'a'),(2,'a'),(5,'d'),(4,'c'),(3,'b'),(0,'a'),(0,'b',2),(0,'c',2), (0,'d',2)]
+	edgs=[(1,'a'),(2,'a'),(0,'a'),(0,'b'),(3,'b'),(4,'b'),(4,'c'),(6,'c'),(5,'c')]
+
 	G2.addEdg(edgs)
 	G2.tag = 'example'
 	G2.draw(trivalent=True)
-	longestPath = dfs(G2, 3, -1)
-	longestPath = dfs(G2, longestPath[-1],-1)
-	print(longestPath)
-
-	center(G2,True)
+	center(G2)
 	print(G2.root)
+
+	print(rooted_tree(G2, G2.root, -1))
+
+	print(getDistinctWhites(G2))
+
+
+
 
 if __name__ == "__main__":
 	test()

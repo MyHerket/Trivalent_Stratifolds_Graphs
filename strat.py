@@ -2,6 +2,7 @@ import networkx as nx
 import string
 import itertools
 import matplotlib
+from AHU_Algorithm import *
 
 #########
 ##Functions for generating vertices' names automatically.
@@ -389,7 +390,27 @@ class strat_graph(nx.MultiGraph):
 			plt.close(f)
 		plt.clf()
 		plt.close()
+
 		#show()
+	def prepareToHash(self):
+		self.center = center(self)
+		self.string = rooted_tree(self, self.center , -1)
+		self.whites = getDistinctWhites(self)
+		self.hash = hash(self.string)
+
+	def __eq__(self, other):
+		if not hasattr(self, 'hash'):
+			self.prepareToHash()
+		if not hasattr(other, 'hash'):
+				other.prepareToHash()
+
+		return self.string == other.string
+
+	def __hash__(self):
+		if not hasattr(self, 'hash'):
+			self.prepareToHash()
+		print("HASHING: ", self.string)
+		return hash(self.string)
 
 
 
