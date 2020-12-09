@@ -274,9 +274,9 @@ def drawGraphs(C_l):
 	k = 1
 	for g in C_l:
 		g.labeling(k)
-		name = "images/"+str(g.tag) + ".png"
+		name = "images/"+ str(g.tag[0])+ "/" +str(g.tag) + ".png"
 		if not(path.exists(name)):
-			g.draw(dir="images/")
+			g.draw(dir="images/"+ str(g.tag[0]) + "/")
 		k += 1
 
 
@@ -349,15 +349,16 @@ def build_until_m(All_graphs, m):
 	"""
 	if m>1 and len(All_graphs) == 0:
 		G2 = b12()
-		G2.draw(dir="images/")
+		G2.draw(dir="images/2/")
 		Graph = [G2]
 		All_graphs =  [Graph]
 	if m>2 and len(All_graphs) == 1:
 		G1 = b111()
-		G1.draw(dir="images/")
+		G1.draw(dir="images/3/")
 		Graph = build_sub_O2(G2)
-		for g in Graph:
-			g.draw(dir="images/")
+		for index, g in enumerate(Graph):
+			g.tag[5] = index+1
+			g.draw(dir="images/3/")
 		Graph.append(G1)
 		All_graphs.append(Graph)
 	if m > 3:
@@ -373,7 +374,7 @@ def build_until_m(All_graphs, m):
 				else:
 					break
 			flat_list = CategoriesX(new_list)
-			print("For ", n, " white nodes, we have ", len(flat_list), " different graphs. Total de graficas creadas", len(new_list) )
+			#print("For ", n, " white nodes, we have ", len(flat_list), " different graphs. Total de graficas creadas", len(new_list) )
 
-			#drawGraphs(unFreezList(flat_list))
+			drawGraphs(unFreezList(flat_list))
 			All_graphs.append(flat_list)
