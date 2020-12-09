@@ -269,12 +269,18 @@ def Categories(list_graph):
 	return CL
 
 def drawGraphs(C_l):
-	print("Nueva lista de graficas")
-	for index, g in enumerate(C_l):
-		g.tag[5] = index+1
+	#aux = [0, 0, 0, 0, 0, 0]
+	#cont = 1
+	for g in C_l:
+		#if(g.tag != aux): 
+		#	cont  = 1
+		
+		#g.tag[5] = cont
 		name = "images/"+ str(g.tag[0])+ "/" + str(g.tag) + ".png"
 		if not(path.exists(name)):
 			g.draw(dir="images/"+ str(g.tag[0]) + "/")
+		#cont += 1
+		#aux = g.tag
 
 
 class Freeze_Strat_Graph:
@@ -285,11 +291,11 @@ class Freeze_Strat_Graph:
 	as already been created.
 	"""
 	def __init__(self, stratGraph):
+		stratGraph.labeling(0)
 		self.stratGraph = stratGraph
 		self.center = center(stratGraph)
 		self.string = rooted_tree(stratGraph, self.center , -1)
 		self.whites = getDistinctWhites(stratGraph)
-		self.tag = label(stratGraph)
 
 	def __eq__(self, other):
 		return self.string == other.string
@@ -371,9 +377,6 @@ def build_until_m(All_graphs, m):
 					new_list += G3
 				else:
 					break
-			
-			#for list in new_list: 
-			#	drawGraphs(unFreezList(list))
 
 			flat_list = CategoriesX(new_list)
 			#print("For ", n, " white nodes, we have ", len(flat_list), " different graphs. Total de graficas creadas", len(new_list) )

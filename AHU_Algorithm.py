@@ -52,9 +52,6 @@ def center(graph):
 
 	return longestPath[center_i]
 
-def label(graph): 
-	return graph.tag
-
 def four(name):
 	"""
 	Turns a string of a number in base 4 into an integer.
