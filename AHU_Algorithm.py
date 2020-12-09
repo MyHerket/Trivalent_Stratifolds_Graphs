@@ -52,6 +52,8 @@ def center(graph):
 
 	return longestPath[center_i]
 
+def label(graph): 
+	return graph.tag
 
 def four(name):
 	"""
