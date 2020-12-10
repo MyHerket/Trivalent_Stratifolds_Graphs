@@ -1,6 +1,9 @@
 from AHU_Algorithm import *
 import os.path
 from os import path
+import numpy as np
+import glob
+
 
 ##Funtions to manipulate nodes' names
 def new_ord(letter):
@@ -268,20 +271,34 @@ def Categories(list_graph):
 		CL += order_by_string(g_list)
 	return CL
 
-def drawGraphs(C_l):
-	#aux = [0, 0, 0, 0, 0, 0]
-	#cont = 1
-	for g in C_l:
-		#if(g.tag != aux): 
-		#	cont  = 1
-		
-		#g.tag[5] = cont
-		name = "images/"+ str(g.tag[0])+ "/" + str(g.tag) + ".png"
-		if not(path.exists(name)):
-			g.draw(dir="images/"+ str(g.tag[0]) + "/")
-		#cont += 1
-		#aux = g.tag
+def drawGraphs(List):
+	Data = np.array([List[0], List[1]], dtype=object)
+	Data = np.transpose(Data)
 
+	white_v = str(Data[0][0].tag[0])
+	folder = len(glob.glob("/images/" + white_v + "/*.png"))
+	if(folder == len(Data[:, 0])): 
+		return
+	
+	f = open("images/" + white_v + "_White_Vertices.txt", "a")
+
+	Data = Data[np.argsort(Data[:, 1])]
+	C_l = Data[folder:, 0]
+	strings = Data[folder:, 1]
+
+	for index, g in enumerate(C_l):
+		label = str(g.labeling(1))
+		name = "images/" + white_v + "/" + label + ".png"
+		while(path.exists(name)):
+			k = k+1
+			label = str(g.labeling(k))
+			name = "images/" + white_v + "/" + label + ".png"
+
+		g.draw(dir="images/"+ white_v + "/")
+		f.write(label + " " + strings[index] + "\n")
+		k = 1
+
+	f.close()
 
 class Freeze_Strat_Graph:
 	"""
@@ -329,9 +346,11 @@ def unFreezList(set_of_freezed_graphs):
 	of unfreezed StratGraphs.
 	"""
 	L = []
+	N = []
 	for fg in set_of_freezed_graphs:
 		L.append(fg.stratGraph)
-	return L
+		N.append(fg.string)
+	return [L, N]
 
 def CategoriesX(list_graph):
 	"""
@@ -379,7 +398,7 @@ def build_until_m(All_graphs, m):
 					break
 
 			flat_list = CategoriesX(new_list)
-			#print("For ", n, " white nodes, we have ", len(flat_list), " different graphs. Total de graficas creadas", len(new_list) )
+			print("For ", n, " white nodes, we have ", len(flat_list), " different graphs. Total de graficas creadas", len(new_list) )
 
 			drawGraphs(unFreezList(flat_list))
 			All_graphs.append(flat_list)

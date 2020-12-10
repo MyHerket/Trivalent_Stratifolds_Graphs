@@ -355,6 +355,7 @@ class strat_graph(nx.MultiGraph):
 		self.tag[2] = len(self.leaves())
 		self.tag[5] = idnum
 		self.leaf_path_values() #Esto obtiene el máximo y mínimo del camino pero no sé si sea la mejor manera de obtenerlo
+		return self.tag
 
 	def draw(self,trivalent=True, dir="./"):
 		"""
